@@ -13,6 +13,7 @@ import xyz.casus.lanittask.service.PersonService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -53,12 +54,12 @@ public class PersonController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        Person person = personService.findById(personid);
-        if (person == null) {
+        Optional<Person> person = personService.findById(personid);
+        if (!person.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(new PersonWithCarsDTO(person), HttpStatus.OK);
+        return new ResponseEntity<>(new PersonWithCarsDTO(person.get()), HttpStatus.OK);
     }
 
 }

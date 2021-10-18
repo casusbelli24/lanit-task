@@ -3,12 +3,13 @@ package xyz.casus.lanittask.service;
 import xyz.casus.lanittask.entity.Person;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PersonService {
 
     void save(Person person);
 
-    Person findById(long id);
+    Optional<Person> findById(long id);
 
     List<Person> findAll();
 

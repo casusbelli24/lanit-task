@@ -11,6 +11,7 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -29,8 +30,8 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Person findById(long id) {
-        return repository.findById(id).orElse(null);
+    public Optional<Person> findById(long id) {
+        return repository.findById(id);
     }
 
     @Override
@@ -50,13 +51,13 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public boolean isPersonOfLegalAge(long id) {
-        Person person = findById(id);
+        Optional<Person> person = findById(id);
 
-        if (person == null) {
+        if (!person.isPresent()) {
             return false;
         }
 
-        Date birthdate = person.getBirthdate();
+        Date birthdate = person.get().getBirthdate();
         LocalDate birthdateDate = birthdate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate now = LocalDate.now();
 
@@ -67,7 +68,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public boolean isIdExist(long id) {
-        return findById(id) != null;
+        return findById(id).isPresent();
     }
 
 }

@@ -7,6 +7,7 @@ import xyz.casus.lanittask.entity.Car;
 import xyz.casus.lanittask.repository.CarRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -25,8 +26,8 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Car findById(long id) {
-        return repository.findById(id).orElse(null);
+    public Optional<Car> findById(long id) {
+        return repository.findById(id);
     }
 
     @Override
@@ -56,6 +57,6 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public boolean isIdExist(long id) {
-        return findById(id) != null;
+        return findById(id).isPresent();
     }
 }

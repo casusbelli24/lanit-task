@@ -16,6 +16,7 @@ import xyz.casus.lanittask.service.PersonService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -40,8 +41,8 @@ public class CarController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        Person person = personService.findById(ownerId);
-        carService.save(new Car(carDto.getId(), carDto.getModel(), carDto.getHorsepower(), person));
+        Optional<Person> person = personService.findById(ownerId);
+        carService.save(new Car(carDto.getId(), carDto.getModel(), carDto.getHorsepower(), person.get()));
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

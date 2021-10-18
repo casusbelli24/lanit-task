@@ -3,12 +3,13 @@ package xyz.casus.lanittask.service;
 import xyz.casus.lanittask.entity.Car;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CarService {
 
     void save(Car car);
 
-    Car findById(long id);
+    Optional<Car> findById(long id);
 
     List<Car> findAll();
 
