@@ -8,12 +8,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import xyz.casus.lanittask.dto.CarDTO;
 import xyz.casus.lanittask.entity.Car;
+import xyz.casus.lanittask.entity.Person;
 import xyz.casus.lanittask.service.CarService;
 import xyz.casus.lanittask.service.PersonService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class CarController {
@@ -28,22 +31,27 @@ public class CarController {
     }
 
     @PostMapping("/car")
-    public ResponseEntity<Void> saveCar(@Valid @RequestBody Car car, BindingResult result) {
-        Long carId = car.getId();
-        Long ownerId = car.getOwnerId();
+    public ResponseEntity<Void> saveCar(@Valid @RequestBody CarDTO carDto, BindingResult result) {
+        Long carId = carDto.getId();
+        Long ownerId = carDto.getOwnerId();
         if (result.hasErrors() || carService.isIdExist(carId)
                 || !personService.isIdExist(ownerId)
                 || !personService.isPersonOfLegalAge(ownerId)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        carService.save(car);
+        Person person = personService.findById(ownerId);
+        carService.save(new Car(carDto.getId(), carDto.getModel(), carDto.getHorsepower(), person));
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/car")
-    public List<Car> getAll() {
-        return carService.findAll();
+    public List<CarDTO> getAll() {
+        return carService.findAll()
+                .stream()
+                .map(Car::convertToDto)
+                .collect(Collectors.toList());
     }
 
 }

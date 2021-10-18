@@ -1,20 +1,12 @@
-package xyz.casus.lanittask.entity;
+package xyz.casus.lanittask.dto;
 
-import xyz.casus.lanittask.dto.CarDTO;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 
-@Entity
-public class Car {
+public class CarDTO {
 
     @NotNull
-    @Id
     private Long id;
 
     @NotNull
@@ -26,22 +18,16 @@ public class Car {
     private Integer horsepower;
 
     @NotNull
-    @ManyToOne
-    @JoinColumn(name = "person_id")
-    private Person person;
+    private Long ownerId;
 
-    public Car() {
+    public CarDTO() {
     }
 
-    public Car(Long id, String model, Integer horsepower, Person person) {
+    public CarDTO(Long id, String model, Integer horsepower, Long ownerId) {
         this.id = id;
         this.model = model;
         this.horsepower = horsepower;
-        this.person = person;
-    }
-
-    public CarDTO convertToDto() {
-        return new CarDTO(id, model, horsepower, person.getId());
+        this.ownerId = ownerId;
     }
 
     public Long getId() {
@@ -68,12 +54,12 @@ public class Car {
         this.horsepower = horsepower;
     }
 
-    public Person getPerson() {
-        return person;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 
     @Override
@@ -82,6 +68,7 @@ public class Car {
                 "id=" + id +
                 ", model='" + model + '\'' +
                 ", horsepower=" + horsepower +
+                ", ownerId=" + ownerId +
                 '}';
     }
 

@@ -14,11 +14,9 @@ public interface CarService {
 
     void deleteAll();
 
-    Long count();
+    long count();
 
-    Long countUniqueVendors();
-
-    List<Car> findByOwnerId(long id);
+    long countUniqueVendors();
 
     boolean isIdExist(long id);
 

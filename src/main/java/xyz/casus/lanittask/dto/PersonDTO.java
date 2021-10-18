@@ -1,23 +1,15 @@
-package xyz.casus.lanittask.entity;
+package xyz.casus.lanittask.dto;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
-import xyz.casus.lanittask.dto.PersonDTO;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import java.util.Date;
-import java.util.List;
 
-@Entity
-public class Person {
+public class PersonDTO {
 
     @NotNull
-    @Id
     private Long id;
 
     @NotNull
@@ -25,24 +17,17 @@ public class Person {
 
     @NotNull
     @DateTimeFormat(pattern = "dd.MM.yyyy")
+    @JsonFormat(pattern = "dd.MM.yyyy", shape = JsonFormat.Shape.STRING)
     @Past
     private Date birthdate;
 
-    @OneToMany(mappedBy = "person")
-    @Cascade(CascadeType.ALL)
-    private List<Car> cars;
-
-    public Person() {
+    public PersonDTO() {
     }
 
-    public Person(Long id, String name, Date birthdate) {
+    public PersonDTO(Long id, String name, Date birthdate) {
         this.id = id;
         this.name = name;
         this.birthdate = birthdate;
-    }
-
-    public PersonDTO convertToDto() {
-        return new PersonDTO(id, name, birthdate);
     }
 
     public Long getId() {
@@ -69,21 +54,12 @@ public class Person {
         this.birthdate = birthdate;
     }
 
-    public List<Car> getCars() {
-        return cars;
-    }
-
-    public void setCars(List<Car> cars) {
-        this.cars = cars;
-    }
-
     @Override
     public String toString() {
         return "Person{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", birthdate=" + birthdate +
-                ", cars=" + cars +
                 '}';
     }
 

@@ -5,14 +5,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import xyz.casus.lanittask.entity.Car;
+import xyz.casus.lanittask.dto.PersonDTO;
+import xyz.casus.lanittask.dto.PersonWithCarsDTO;
 import xyz.casus.lanittask.entity.Person;
-import xyz.casus.lanittask.dto.PersonWithCars;
 import xyz.casus.lanittask.service.CarService;
 import xyz.casus.lanittask.service.PersonService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class PersonController {
@@ -27,23 +28,27 @@ public class PersonController {
     }
 
     @PostMapping("/person")
-    public ResponseEntity<Void> savePerson(@Valid @RequestBody Person person, BindingResult result) {
-        Long personId = person.getId();
+    public ResponseEntity<Void> savePerson(@Valid @RequestBody PersonDTO personDTO, BindingResult result) {
+        Long personId = personDTO.getId();
         if (result.hasErrors() || personService.isIdExist(personId)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        personService.save(person);
+        personService.save(new Person(personDTO.getId(), personDTO.getName(), personDTO.getBirthdate()));
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/person")
-    public List<Person> getAll() {
-        return personService.findAll();
+    public List<PersonDTO> getAll() {
+        return personService.findAll()
+                .stream()
+                .map(Person::convertToDto)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/personwithcars")
-    public ResponseEntity<PersonWithCars> getPeopleWithCars(@RequestParam(required = false) Long personid) {
+    public ResponseEntity<PersonWithCarsDTO> getPeopleWithCars(@RequestParam(required = false) Long personid) {
         if (personid == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -53,9 +58,7 @@ public class PersonController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        List<Car> personCars = carService.findByOwnerId(personid);
-
-        return new ResponseEntity<>(new PersonWithCars(person, personCars.toArray(new Car[0])), HttpStatus.OK);
+        return new ResponseEntity<>(new PersonWithCarsDTO(person), HttpStatus.OK);
     }
 
 }

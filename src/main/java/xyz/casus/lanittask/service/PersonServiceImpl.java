@@ -40,11 +40,11 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void deleteAll() {
-        repository.truncate();
+        repository.deleteAll();
     }
 
     @Override
-    public Long count() {
+    public long count() {
         return repository.count();
     }
 

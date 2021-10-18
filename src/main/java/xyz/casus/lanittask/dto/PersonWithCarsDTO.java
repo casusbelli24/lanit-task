@@ -1,6 +1,7 @@
 package xyz.casus.lanittask.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 import xyz.casus.lanittask.entity.Car;
 import xyz.casus.lanittask.entity.Person;
 
@@ -8,32 +9,28 @@ import java.util.Arrays;
 import java.util.Date;
 
 
-public class PersonWithCars {
+public class PersonWithCarsDTO {
 
     private Long id;
 
     private String name;
 
-    @JsonFormat(pattern = "dd.MM.yyyy")
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
+    @JsonFormat(pattern = "dd.MM.yyyy", shape = JsonFormat.Shape.STRING)
     private Date birthdate;
 
-    private Car[] cars;
+    private CarDTO[] cars;
 
-    public PersonWithCars() {
+    public PersonWithCarsDTO() {
     }
 
-    public PersonWithCars(Person person, Car[] cars) {
+    public PersonWithCarsDTO(Person person) {
         this.id = person.getId();
         this.name = person.getName();
         this.birthdate = person.getBirthdate();
-        this.cars = cars;
-    }
-
-    public PersonWithCars(Long id, String name, Date birthdate, Car[] cars) {
-        this.id = id;
-        this.name = name;
-        this.birthdate = birthdate;
-        this.cars = cars;
+        this.cars = person.getCars().stream()
+                .map(Car::convertToDto)
+                .toArray(CarDTO[]::new);
     }
 
     public Long getId() {
@@ -60,11 +57,11 @@ public class PersonWithCars {
         this.birthdate = birthdate;
     }
 
-    public Car[] getCars() {
+    public CarDTO[] getCars() {
         return cars;
     }
 
-    public void setCars(Car[] cars) {
+    public void setCars(CarDTO[] cars) {
         this.cars = cars;
     }
 

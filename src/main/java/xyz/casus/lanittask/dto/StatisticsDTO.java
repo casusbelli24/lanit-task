@@ -2,7 +2,7 @@ package xyz.casus.lanittask.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Statistics {
+public class StatisticsDTO {
 
     @JsonProperty("personcount")
     private Long personCount;
@@ -13,7 +13,7 @@ public class Statistics {
     @JsonProperty("uniquevendorcount")
     private Long uniqueVendorCount;
 
-    public Statistics(Long personCount, Long carCount, Long uniqueVendorCount) {
+    public StatisticsDTO(Long personCount, Long carCount, Long uniqueVendorCount) {
         this.personCount = personCount;
         this.carCount = carCount;
         this.uniqueVendorCount = uniqueVendorCount;

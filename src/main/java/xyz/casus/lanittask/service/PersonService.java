@@ -14,7 +14,7 @@ public interface PersonService {
 
     void deleteAll();
 
-    Long count();
+    long count();
 
     boolean isPersonOfLegalAge(long id);
 

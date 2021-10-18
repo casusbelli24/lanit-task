@@ -36,27 +36,22 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public void deleteAll() {
-        repository.truncate();
+        repository.deleteAll();
     }
 
     @Override
-    public Long count() {
+    public long count() {
         return repository.count();
     }
 
     @Override
-    public Long countUniqueVendors() {
+    public long countUniqueVendors() {
         return repository.findAll().stream()
                 .map(Car::getModel)
                 .map(model -> model.split("-")[0])
                 .map(String::toLowerCase)
                 .distinct()
                 .count();
-    }
-
-    @Override
-    public List<Car> findByOwnerId(long id) {
-        return repository.findByOwnerId(id);
     }
 
     @Override
