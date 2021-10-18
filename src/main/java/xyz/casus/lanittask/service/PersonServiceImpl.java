@@ -7,9 +7,7 @@ import xyz.casus.lanittask.entity.Person;
 import xyz.casus.lanittask.repository.PersonRepository;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,11 +55,10 @@ public class PersonServiceImpl implements PersonService {
             return false;
         }
 
-        Date birthdate = person.get().getBirthdate();
-        LocalDate birthdateDate = birthdate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate birthdate = person.get().getBirthdate();
         LocalDate now = LocalDate.now();
 
-        long fullYears = ChronoUnit.YEARS.between(birthdateDate, now);
+        long fullYears = ChronoUnit.YEARS.between(birthdate, now);
 
         return fullYears >= 18;
     }

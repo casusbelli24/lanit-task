@@ -5,8 +5,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import xyz.casus.lanittask.entity.Car;
 import xyz.casus.lanittask.entity.Person;
 
+import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Date;
 
 
 public class PersonWithCarsDTO {
@@ -17,7 +17,7 @@ public class PersonWithCarsDTO {
 
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     @JsonFormat(pattern = "dd.MM.yyyy", shape = JsonFormat.Shape.STRING)
-    private Date birthdate;
+    private LocalDate birthdate;
 
     private CarDTO[] cars;
 
@@ -49,11 +49,11 @@ public class PersonWithCarsDTO {
         this.name = name;
     }
 
-    public Date getBirthdate() {
+    public LocalDate getBirthdate() {
         return birthdate;
     }
 
-    public void setBirthdate(Date birthdate) {
+    public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
     }
 

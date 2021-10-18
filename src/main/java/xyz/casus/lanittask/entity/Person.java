@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -26,7 +26,7 @@ public class Person {
     @NotNull
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     @Past
-    private Date birthdate;
+    private LocalDate birthdate;
 
     @OneToMany(mappedBy = "person")
     @Cascade(CascadeType.ALL)
@@ -35,7 +35,7 @@ public class Person {
     public Person() {
     }
 
-    public Person(Long id, String name, Date birthdate) {
+    public Person(Long id, String name, LocalDate birthdate) {
         this.id = id;
         this.name = name;
         this.birthdate = birthdate;
@@ -61,11 +61,11 @@ public class Person {
         this.name = name;
     }
 
-    public Date getBirthdate() {
+    public LocalDate getBirthdate() {
         return birthdate;
     }
 
-    public void setBirthdate(Date birthdate) {
+    public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
     }
 

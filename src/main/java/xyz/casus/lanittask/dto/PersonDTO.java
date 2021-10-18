@@ -5,7 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class PersonDTO {
 
@@ -19,12 +19,12 @@ public class PersonDTO {
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     @JsonFormat(pattern = "dd.MM.yyyy", shape = JsonFormat.Shape.STRING)
     @Past
-    private Date birthdate;
+    private LocalDate birthdate;
 
     public PersonDTO() {
     }
 
-    public PersonDTO(Long id, String name, Date birthdate) {
+    public PersonDTO(Long id, String name, LocalDate birthdate) {
         this.id = id;
         this.name = name;
         this.birthdate = birthdate;
@@ -46,11 +46,11 @@ public class PersonDTO {
         this.name = name;
     }
 
-    public Date getBirthdate() {
+    public LocalDate getBirthdate() {
         return birthdate;
     }
 
-    public void setBirthdate(Date birthdate) {
+    public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
     }
 
