@@ -47,12 +47,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public long countUniqueVendors() {
-        return repository.findAll().stream()
-                .map(Car::getModel)
-                .map(model -> model.split("-")[0])
-                .map(String::toLowerCase)
-                .distinct()
-                .count();
+        return repository.countUniqueVendors();
     }
 
     @Override

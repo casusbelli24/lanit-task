@@ -1,17 +1,24 @@
 package xyz.casus.lanittask.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 
 public class CarDTO {
 
+    @JsonIgnore
+    private final String VENDOR_AND_MODEL_SEPARATOR = "-";
+
     @NotNull
     private Long id;
 
     @NotNull
     @Pattern(regexp = "[a-zA-Z0-9]+?-[a-zA-Z0-9-]+")
-    private String model;
+    @JsonProperty("model")
+    private String vendorAndModel;
 
     @NotNull
     @Positive
@@ -23,9 +30,9 @@ public class CarDTO {
     public CarDTO() {
     }
 
-    public CarDTO(Long id, String model, Integer horsepower, Long ownerId) {
+    public CarDTO(Long id, String vendorAndModel, Integer horsepower, Long ownerId) {
         this.id = id;
-        this.model = model;
+        this.vendorAndModel = vendorAndModel;
         this.horsepower = horsepower;
         this.ownerId = ownerId;
     }
@@ -38,12 +45,12 @@ public class CarDTO {
         this.id = id;
     }
 
-    public String getModel() {
-        return model;
+    public String getVendorAndModel() {
+        return vendorAndModel;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setVendorAndModel(String vendorAndModel) {
+        this.vendorAndModel = vendorAndModel;
     }
 
     public Integer getHorsepower() {
@@ -62,11 +69,21 @@ public class CarDTO {
         this.ownerId = ownerId;
     }
 
+    @JsonIgnore
+    public String getVendor() {
+        return vendorAndModel.substring(0, vendorAndModel.indexOf(VENDOR_AND_MODEL_SEPARATOR));
+    }
+
+    @JsonIgnore
+    public String getModel() {
+        return vendorAndModel.substring(vendorAndModel.indexOf(VENDOR_AND_MODEL_SEPARATOR) + 1);
+    }
+
     @Override
     public String toString() {
         return "Car{" +
                 "id=" + id +
-                ", model='" + model + '\'' +
+                ", model='" + vendorAndModel + '\'' +
                 ", horsepower=" + horsepower +
                 ", ownerId=" + ownerId +
                 '}';

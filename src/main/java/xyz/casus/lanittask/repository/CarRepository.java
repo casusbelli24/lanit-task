@@ -11,4 +11,7 @@ public interface CarRepository extends JpaRepository<Car, Long> {
     @Query(value = "TRUNCATE TABLE Car", nativeQuery = true)
     void truncate();
 
+    @Query("SELECT COUNT(DISTINCT UPPER(vendor)) FROM Car")
+    long countUniqueVendors();
+
 }

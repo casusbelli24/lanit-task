@@ -42,7 +42,8 @@ public class CarController {
         }
 
         Optional<Person> person = personService.findById(ownerId);
-        carService.save(new Car(carDto.getId(), carDto.getModel(), carDto.getHorsepower(), person.get()));
+
+        carService.save(new Car(carId, carDto.getVendor(), carDto.getModel(), carDto.getHorsepower(), person.get()));
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

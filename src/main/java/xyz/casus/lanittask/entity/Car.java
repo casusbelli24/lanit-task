@@ -2,10 +2,7 @@ package xyz.casus.lanittask.entity;
 
 import xyz.casus.lanittask.dto.CarDTO;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
@@ -18,7 +15,11 @@ public class Car {
     private Long id;
 
     @NotNull
-    @Pattern(regexp = "[a-zA-Z0-9]+?-[a-zA-Z0-9-]+")
+    @Pattern(regexp = "[a-zA-Z0-9]+")
+    private String vendor;
+
+    @NotNull
+    @Pattern(regexp = "[a-zA-Z0-9-]+")
     private String model;
 
     @NotNull
@@ -33,15 +34,20 @@ public class Car {
     public Car() {
     }
 
-    public Car(Long id, String model, Integer horsepower, Person person) {
+    public Car(Long id, String vendor, String model, Integer horsepower, Person person) {
         this.id = id;
+        this.vendor = vendor;
         this.model = model;
         this.horsepower = horsepower;
         this.person = person;
     }
 
     public CarDTO convertToDto() {
-        return new CarDTO(id, model, horsepower, person.getId());
+        StringBuilder builder = new StringBuilder();
+        builder.append(vendor);
+        builder.append("-");
+        builder.append(model);
+        return new CarDTO(id, builder.toString(), horsepower, person.getId());
     }
 
     public Long getId() {
@@ -50,6 +56,14 @@ public class Car {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(String vendor) {
+        this.vendor = vendor;
     }
 
     public String getModel() {
